@@ -38,6 +38,7 @@ class BookController extends Controller
             'cuarto_id'  => 'required',
             'in'         => 'required',
             'out'        => 'required',
+            'check_in'   => 'required'
         ]);
         $row = Book::create( $request->all() );
         return [
@@ -53,10 +54,24 @@ class BookController extends Controller
             'cuarto_id'  => 'required',
             'in'         => 'required',
             'out'        => 'required',
+            'check_in'   => 'required'
         ]);
         $row = Book::find( $id );
         if( $row !== null ){
             $row->update( $request->all() );
+        }
+        return [
+            'status' => 200,
+            'msg'    => 'Request successfully',
+            'data'   => $row
+        ];
+    }
+
+    public function checkIn( int $id ){
+        $row = Book::find( $id );
+        if( $row !== null ){
+            $row->check_in = true;
+            $row->save();
         }
         return [
             'status' => 200,

@@ -13,7 +13,8 @@ class Book extends Model
         'huesped_id',
         'cuarto_id',
         'in',
-        'out'
+        'out',
+        'check_in'
     ];
 
     public function huesped(){

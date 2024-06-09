@@ -34,4 +34,5 @@ Route::get( '/book', [ BookController::class, 'index' ] )->name( 'book.index' );
 Route::get( '/book/{id}', [ BookController::class, 'find' ] )->name( 'book.find' );
 Route::post( '/book', [ BookController::class, 'store' ] )->name( 'book.store' );
 Route::put( '/book/{id}', [ BookController::class, 'update' ] )->name( 'book.update' );
+Route::put( '/book/check_in/{id}', [ BookController::class, 'checkIn' ] )->name( 'book.check_in' );
 Route::delete( '/book/{id}', [ BookController::class, 'destroy' ] )->name( 'book.destroy' );

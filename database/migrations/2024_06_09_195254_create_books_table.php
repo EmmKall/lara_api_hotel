@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId( 'cuarto_id' )->references( 'id' )->on( 'cuartos' );
             $table->date( 'in' );
             $table->date( 'out' );
+            $table->boolean( 'check_in' );
             $table->timestamps();
         });
     }
