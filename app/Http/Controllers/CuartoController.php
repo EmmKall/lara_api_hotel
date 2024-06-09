@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Piso;
+use App\Models\Cuarto;
 use Illuminate\Http\Request;
 
-class PisoController extends Controller
+class CuartoController extends Controller
 {
-
     public function index() {
-        $data = Piso::all();
+        $data = Cuarto::all();
         foreach ( $data as $key => $item ) {
-            $item->cuarto;
+            $item->piso;
         }
         return [
             'status' => 200,
@@ -20,9 +19,9 @@ class PisoController extends Controller
         ];
     }
 
-    public function find( int $id ) {
-        $row = Piso::find( $id );
-        $row->cuarto;
+    public function find( int $id ){
+        $row = Cuarto::find( $id );
+        $row->piso;
         return [
             'status' => 200,
             'msg'    => 'Request successfully',
@@ -32,9 +31,10 @@ class PisoController extends Controller
 
     public function store( Request $request ){
         $request->validate([
-            'piso' => 'required'
+            'cuarto'  => 'required',
+            'piso_id' => 'required',
         ]);
-        $row = Piso::create( $request->all() );
+        $row = Cuarto::create( $request->all() );
         return [
             'status' => 201,
             'msg'    => 'Request successfully',
@@ -42,11 +42,12 @@ class PisoController extends Controller
         ];
     }
 
-    public function update( Request $request, int $id ){
+    public function update( Request $request, int $id  ){
         $request->validate([
-            'piso' => 'required'
+            'cuarto'  => 'required',
+            'piso_id' => 'required',
         ]);
-        $row = Piso::find( $id );
+        $row = Cuarto::find( $id );
         if( $row !== null ){
             $row->update( $request->all() );
         }
@@ -56,11 +57,10 @@ class PisoController extends Controller
             'msg'    => 'Request successfully',
             'data'   => $row
         ];
-
     }
 
     public function destroy( int $id ){
-        $row = Piso::find( $id );
+        $row = Cuarto::find( $id );
         if( $row !== null ){
             $row->delete();
         }

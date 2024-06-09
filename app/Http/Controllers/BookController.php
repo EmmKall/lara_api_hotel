@@ -2,27 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Piso;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
-class PisoController extends Controller
+class BookController extends Controller
 {
 
-    public function index() {
-        $data = Piso::all();
+    public function index(){
+        $data = Book::all();
         foreach ( $data as $key => $item ) {
+            $item->huesped;
             $item->cuarto;
         }
         return [
             'status' => 200,
-            'msg'    => 'Request successfully',
+            'msg'    => 'request successfully',
             'data'   => $data
         ];
     }
 
-    public function find( int $id ) {
-        $row = Piso::find( $id );
+    public function find( int $id ){
+        $row = Book::find( $id );
         $row->cuarto;
+        $row->huesped;
         return [
             'status' => 200,
             'msg'    => 'Request successfully',
@@ -32,9 +34,12 @@ class PisoController extends Controller
 
     public function store( Request $request ){
         $request->validate([
-            'piso' => 'required'
+            'huesped_id' => 'required',
+            'cuarto_id'  => 'required',
+            'in'         => 'required',
+            'out'        => 'required',
         ]);
-        $row = Piso::create( $request->all() );
+        $row = Book::create( $request->all() );
         return [
             'status' => 201,
             'msg'    => 'Request successfully',
@@ -44,31 +49,32 @@ class PisoController extends Controller
 
     public function update( Request $request, int $id ){
         $request->validate([
-            'piso' => 'required'
+            'huesped_id' => 'required',
+            'cuarto_id'  => 'required',
+            'in'         => 'required',
+            'out'        => 'required',
         ]);
-        $row = Piso::find( $id );
+        $row = Book::find( $id );
         if( $row !== null ){
             $row->update( $request->all() );
         }
-
         return [
             'status' => 200,
             'msg'    => 'Request successfully',
             'data'   => $row
         ];
-
     }
 
     public function destroy( int $id ){
-        $row = Piso::find( $id );
+        $row = Book::find( $id );
         if( $row !== null ){
             $row->delete();
         }
-
         return [
             'status' => 200,
             'msg'    => 'Request successfully'
         ];
     }
+
 
 }

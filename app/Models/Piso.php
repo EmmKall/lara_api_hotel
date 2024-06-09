@@ -11,5 +11,8 @@ class Piso extends Model
 
     protected $fillable = [ 'piso' ];
 
+    public function cuarto() {
+        return $this->hasMany( Cuarto::class );
+    }
 
 }
