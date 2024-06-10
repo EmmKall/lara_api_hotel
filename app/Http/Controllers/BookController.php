@@ -74,6 +74,20 @@ class BookController extends Controller
         ]);
         $row = Book::find( $id );
         if( $row !== null ){
+            $books = Book::where( 'cuarto_id', '=', $request->cuarto_id )->get();
+            $in = Carbon::parse( $request->in );
+            $out = Carbon::parse( $request->out );
+            //Valid dates
+            foreach ( $books as $key => $item ) {
+                $rowIn = Carbon::parse( $item->in );
+                $rowOut = Carbon::parse( $item->out );
+                if( ( $in == $rowIn || ( $in > $rowIn && $in < $rowOut ) ) || ( $out == $rowOut || ( $out > $rowIn && $out < $rowOut ) ) ) {
+                    return [
+                        'status' => 400,
+                        'msg'    => 'Room are not available for these date'
+                    ];
+                }
+            }
             $row->update( $request->all() );
         }
         return [
