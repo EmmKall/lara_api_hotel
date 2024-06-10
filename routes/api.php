@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CuartoController;
 use App\Http\Controllers\HuespedController;
 use App\Http\Controllers\PisoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,6 +12,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+//User
+Route::get( '/user', [ UserController::class, 'index' ] )->name( 'user.index' );
+Route::get( '/user/{id}', [ UserController::class, 'find' ] )->name( 'user.find' );
+Route::post( '/user/forget', [ UserController::class, 'forgetPass' ] )->name( 'user.forgetPass' );
+Route::post( '/user/change_pass', [ UserController::class, 'changePass' ] )->name( 'user.changePass' );
+Route::post( '/user', [ UserController::class, 'store' ] )->name( 'user.store' );
+Route::put( '/user/{id}', [ UserController::class, 'update' ] )->name( 'user.update' );
+Route::delete( '/user/{id}', [ UserController::class, 'destroy' ] )->name( 'user.destroy' );
 //Piso
 Route::get( '/piso', [ PisoController::class, 'index' ] )->name( 'piso.index' );
 Route::get( '/piso/{id}', [ PisoController::class, 'find' ] )->name( 'piso.find' );
