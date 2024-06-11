@@ -15,6 +15,7 @@ Route::get('/user', function (Request $request) {
 //User
 Route::get( '/user', [ UserController::class, 'index' ] )->name( 'user.index' );
 Route::get( '/user/{id}', [ UserController::class, 'find' ] )->name( 'user.find' );
+Route::get( '/user/verify/{token}', [ UserController::class, 'verify' ] )->name( 'user.verify' );
 Route::post( '/user/forget', [ UserController::class, 'forgetPass' ] )->name( 'user.forgetPass' );
 Route::post( '/user/change_pass', [ UserController::class, 'changePass' ] )->name( 'user.changePass' );
 Route::post( '/user', [ UserController::class, 'store' ] )->name( 'user.store' );

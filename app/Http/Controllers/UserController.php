@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Text;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,6 +55,22 @@ class UserController extends Controller
             'status' => 201,
             'msg'    => 'Request successfully',
             'data'   => $row
+        ];
+    }
+
+    public function verify( String $token ){
+        $row = User::where( 'token', '=', $token )->first();
+        if( $row === null ){
+            return [
+                'status' => 400,
+                'msg'    => 'Data not found'
+            ];
+        }
+        $row->email_verified_at = Carbon::now();
+        $row->save();
+        return [
+            'status' => 200,
+            'msg'    => 'Request succesfully'
         ];
     }
 
