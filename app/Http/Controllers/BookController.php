@@ -10,6 +10,11 @@ use Illuminate\Support\Carbon;
 class BookController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth:api'/*, ['except' => [''] ]*/ );
+    }
+
     public function index(){
         $data = Book::all();
         foreach ( $data as $key => $item ) {

@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 class PisoController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth:api'/*, ['except' => [''] ]*/ );
+    }
+
     public function index() {
         $data = Piso::all();
         foreach ( $data as $key => $item ) {

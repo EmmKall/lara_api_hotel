@@ -12,7 +12,6 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        # By default we are using here auth:api middleware
         $this->middleware('auth:api'/*, ['except' => [''] ]*/ );
     }
 
@@ -55,7 +54,7 @@ class UserController extends Controller
             'phone'     => $request->phone,
             'password'  => $password,
             'rol'       => $request->rol,
-            'token'     => ''
+            'token'     => Text::generatePass( 10 )
         ]);
         return [
             'status' => 201,
@@ -145,7 +144,7 @@ class UserController extends Controller
             ];
         }
         //Generate password
-        $password = Text::generatePass();
+        $password = Text::generatePass( 12 );
         $row->password = Hash::make( $password );
         $row->save();
         //Send password

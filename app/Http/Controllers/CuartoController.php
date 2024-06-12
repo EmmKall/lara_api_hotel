@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CuartoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api'/*, ['except' => [''] ]*/ );
+    }
+
     public function index() {
         $data = Cuarto::all();
         foreach ( $data as $key => $item ) {

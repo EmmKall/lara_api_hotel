@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class HuespedController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api'/*, ['except' => [''] ]*/ );
+    }
 
     public function index() {
         $data = Huesped::all();
