@@ -72,6 +72,37 @@ class UserController extends Controller
         ];
     }
 
+    public function sendConfirmation( Request $request ){
+        $request->validate([
+            'email'      => 'required',
+        ]);
+        $row = User::where( 'email', '=', $request->email )->first();
+        if( $row === null ){
+            return response()->json([
+                'status' => 404,
+                'msg'    => 'Data not found'
+            ]);
+        }
+        if( $row->email_verified_at === null ){
+            return response()->json([
+                'status' => 404,
+                'msg'    => 'Account was confirmed'
+            ]);
+        }
+        $data = [
+            'name' => $row->name . ' ' . $row->last_name,
+            'link' => 'localhost:8000/user/verify/' . $row->token
+        ];
+        Mail::to( $row->email )->send( new ConfirmAccount( $data ) );
+
+        return [
+            'status' => 201,
+            'msg'    => 'Request successfully',
+            'data'   => $row,
+        ];
+
+    }
+
     public function verify( String $token ){
         $row = User::where( 'token', '=', $token )->first();
         if( $row === null ){
