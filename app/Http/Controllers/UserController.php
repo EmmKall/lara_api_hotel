@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Text;
+use App\Mail\ConfirmAccount;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api'/*, ['except' => [''] ]*/ );
+        $this->middleware('auth:api', ['except' => [ 'store', 'verify' ] ] );
     }
 
     public function index() {
@@ -56,10 +58,17 @@ class UserController extends Controller
             'rol'       => $request->rol,
             'token'     => Text::generatePass( 10 )
         ]);
+        //Send email
+        $data = [
+            'name' => $row->name . ' ' . $row->last_name,
+            'link' => 'localhost:8000/user/verify/' . $row->token
+        ];
+        Mail::to( $row->email )->send( new ConfirmAccount( $data ) );
+
         return [
             'status' => 201,
             'msg'    => 'Request successfully',
-            'data'   => $row
+            'data'   => $row,
         ];
     }
 

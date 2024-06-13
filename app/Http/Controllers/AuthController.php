@@ -11,7 +11,7 @@ class AuthController extends Controller
 
     public function __construct()
     {
-        $this->middleware( 'auth:api', ['except' => ['login'] ] );
+        $this->middleware( [ 'auth:api', 'verified' ], ['except' => ['login'] ] );
     }
 
     public function login()
@@ -22,6 +22,13 @@ class AuthController extends Controller
             return response()->json([
                 'status' => 400,
                 'error'  => 'Unauthorized'
+            ], 200 );
+        }
+        $verify = auth()->user()->email_verified_at;
+        if( $verify === null ){
+            return response()->json([
+                'status' => 400,
+                'error'  => 'Acount Are not verified'
             ], 200 );
         }
 
