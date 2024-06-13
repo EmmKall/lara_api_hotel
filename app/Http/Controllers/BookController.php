@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\confirmation;
+use App\Mail\updatedBook;
 use App\Models\Book;
 use App\Models\Huesped;
 use Illuminate\Http\Request;
@@ -106,6 +107,14 @@ class BookController extends Controller
             }
             $row->update( $request->all() );
         }
+        //Send mail
+        $huesped = Huesped::find( $request->huesped_id );
+        $data =[
+            'name' => $huesped->name . ' ' . $huesped->last_name,
+            'in'   => $request->in,
+            'out'  => $huesped->out
+        ];
+        Mail::to( $huesped->email )->send( new updatedBook( $data ) );
         return [
             'status' => 200,
             'msg'    => 'Request successfully',
