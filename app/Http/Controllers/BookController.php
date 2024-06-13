@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\confirmation;
 use App\Models\Book;
-use App\Models\Cuarto;
+use App\Models\Huesped;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class BookController extends Controller
 {
@@ -62,6 +64,15 @@ class BookController extends Controller
             }
         }
         $row = Book::create( $request->all() );
+        //Send mail
+        $huesped = Huesped::find( $request->huesped_id );
+        $data =[
+            'name' => $huesped->name . ' ' . $huesped->last_name,
+            'in'   => $request->in,
+            'out'  => $huesped->out
+        ];
+        Mail::to( $huesped->email )->send( new confirmation( $data ) );
+
         return [
             'status' => 201,
             'msg'    => 'Request successfully',
@@ -117,9 +128,20 @@ class BookController extends Controller
 
     public function destroy( int $id ){
         $row = Book::find( $id );
+        //Send cancelation
         if( $row !== null ){
             $row->delete();
         }
+        //Send cancelation
+        $now = Carbon::now();
+        $huesped = Huesped::find( $row->huesped_id );
+        $diff = ( $now->diffInDays( Carbon::parse( $row->in ) ) < 7 ) ? true : false;
+        $data = [
+            'name'    => $huesped->name . ' ' . $huesped->last_name,
+            'in'      => $row->in,
+            'out'     => $row->out,
+            'penalty' => $diff
+        ];
         return [
             'status' => 200,
             'msg'    => 'Request successfully'
